@@ -1,0 +1,1656 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "New Accounts API",
+    "description" : "Last Updated: 2021-06-30",
+    "version" : "1.0.0"
+  },
+  "externalDocs" : {
+    "description" : "Custom Field Validations",
+    "url" : "https://app.getguru.com/card/inpxkXKT/Custom-Fields"
+  },
+  "servers" : [ {
+    "url" : "https://merchantapp.io"
+  } ],
+  "paths" : {
+    "/{tenantId}/api/v1/MerchantApplication/Template" : {
+      "post" : {
+        "tags" : [ "Merchant Application" ],
+        "summary" : "Retrieve merchant application template",
+        "description" : "Use this method to get the template to be used to submit new merchant applications.",
+        "operationId" : "MerchantApplicationController_Template",
+        "parameters" : [ {
+          "name" : "tenantId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/GenericRequest"
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MerchantApplicationTemplateResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{tenantId}/api/v1/MerchantApplication/Submit" : {
+      "post" : {
+        "tags" : [ "Merchant Application" ],
+        "summary" : "Submit merchant application asyncronously",
+        "description" : "Asyncronously submit a completed merchant application to Infinicept for underwriting and boarding.",
+        "operationId" : "MerchantApplicationController_Submit",
+        "parameters" : [ {
+          "name" : "tenantId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/MerchantApplicationSubmissionModel"
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MerchantApplicationSubmissionResult"
+                }
+              }
+            }
+          }
+        },
+        "callbacks" : {
+          "webhooks" : {
+            "Batched Boarding Results" : {
+              "post" : {
+                "requestBody" : {
+                  "$ref" : "#/components/requestBodies/BatchedBoardingResultsWebhook"
+                },
+                "responses" : {
+                  "2XX" : {
+                    "description" : "OK"
+                  },
+                  "4XX" : {
+                    "description" : "Webhook is attempted 4 times."
+                  },
+                  "5XX" : {
+                    "description" : "Webhook is attempted 4 times."
+                  }
+                }
+              }
+            },
+            "Batched Underwriting Results" : {
+              "post" : {
+                "requestBody" : {
+                  "$ref" : "#/components/requestBodies/BatchedUnderwritingResultsWebhook"
+                },
+                "responses" : {
+                  "2XX" : {
+                    "description" : "OK"
+                  },
+                  "4XX" : {
+                    "description" : "Webhook is attempted 4 times."
+                  },
+                  "5XX" : {
+                    "description" : "Webhook is attempted 4 times."
+                  }
+                }
+              }
+            },
+            "Demographics Change" : {
+              "post" : {
+                "requestBody" : {
+                  "$ref" : "#/components/requestBodies/DemographicDataChangeWebhook"
+                },
+                "responses" : {
+                  "2XX" : {
+                    "description" : "OK"
+                  },
+                  "4XX" : {
+                    "description" : "Webhook is attempted 4 times."
+                  },
+                  "5XX" : {
+                    "description" : "Webhook is attempted 4 times."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{tenantId}/api/v1/MerchantApplication/SubmitSync" : {
+      "post" : {
+        "tags" : [ "Merchant Application" ],
+        "summary" : "Submit merchant application Syncronously. **DEPRECATED**",
+        "description" : "Submit a completed merchant application to Infinicept for underwriting and boarding.",
+        "operationId" : "MerchantApplicationController_SubmitSync",
+        "parameters" : [ {
+          "name" : "tenantId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/MerchantApplicationSubmissionModel"
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SynchronousMerchantApplicationSubmissionResult"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : true
+      }
+    },
+    "/{tenantId}/api/v1/MerchantApplication/SubmitPartial" : {
+      "post" : {
+        "tags" : [ "Merchant Application" ],
+        "summary" : "Submit partial merchant application",
+        "description" : "This method submits a pre-generated application to the merchant. Any data submitted in the custom fields will populate in the custom fields on the merchant application. If pre-generated notifications are setup, the notification sends to the selected user(s) upon API submission. Use the Template method to get the proper submission template for your cobrand.",
+        "operationId" : "MerchantApplicationController_SubmitPartial",
+        "parameters" : [ {
+          "name" : "tenantId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/MerchantApplicationSubmissionModel"
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PartialMerchantApplicationSubmissionResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{tenantId}/api/v1/MerchantApplication/Incomplete" : {
+      "put" : {
+        "tags" : [ "Merchant Application" ],
+        "summary" : "Incrimental merchant application submission.",
+        "description" : "This method validates, saves, and updates the application custom fields as the submerchant moves through the application steps, instead of sending the payload in a single submission.\n\nNote: Including the merchantApplicationId will result in updating the specified application; no merchantApplicationId will result in the creation of a new application.",
+        "operationId" : "MerchantApplicationController_Incomplete",
+        "parameters" : [ {
+          "name" : "tenantId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "submitApplication",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "boolean"
+          }
+        }, {
+          "name" : "merchantApplicationId",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/MerchantApplicationSubmissionModel"
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MerchantApplicationSubmissionResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{tenantId}/api/v1/MerchantApplication/UpdateMerchantApplication" : {
+      "put" : {
+        "tags" : [ "Merchant Application" ],
+        "summary" : "Update merchant application",
+        "description" : "This method updates an existing application. \n\n Note: A successful API call results in a 204 No Content response from the server.",
+        "operationId" : "MerchantApplicationController_UpdateMerchantApplication",
+        "parameters" : [ {
+          "name" : "tenantId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "merchantApplicationId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/MerchantApplicationSubmissionModel"
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{tenantId}/api/v1/MerchantApplication/AnswerInteractiveQuestions" : {
+      "post" : {
+        "tags" : [ "Merchant Application" ],
+        "summary" : "Submit Answers to Knowledge Based Questions",
+        "description" : "Use this method to submit answers to the Knowledge Based Questions given by the Submit method.",
+        "operationId" : "MerchantApplicationController_AnswerInteractiveQuestions",
+        "parameters" : [ {
+          "name" : "tenantId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InteractiveQuestionsSubmissionModel"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MerchantApplicationSubmissionResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{tenantId}/api/v1/MerchantApplication/MerchantApplicationDetails" : {
+      "get" : {
+        "tags" : [ "Merchant Application" ],
+        "summary" : "Retrieve the merchant application details",
+        "description" : "This method gets the application's custom field details and the current status of the application's underwriting services.",
+        "operationId" : "MerchantApplicationController_MerchantApplicationDetails",
+        "parameters" : [ {
+          "name" : "tenantId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "merchantApplicationId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-AuthenticationKeyId",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-AuthenticationKeyValue",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MerchantApplicationDetailsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{tenantId}/api/v1/MerchantApplication/AdditionalLocationDetails" : {
+      "get" : {
+        "tags" : [ "Merchant Application" ],
+        "summary" : "Retrieve the Additional Location Field Details",
+        "description" : "This method gets the custom field details in the format to submit Additional Location applications.",
+        "operationId" : "MerchantApplicationController_AdditionalLocationDetails",
+        "parameters" : [ {
+          "name" : "tenantId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "merchantApplicationId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-AuthenticationKeyId",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "X-AuthenticationKeyValue",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AdditionalLocationDetailsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{tenantId}/api/v1/Underwriting/SubmitTriggeredUnderwriting" : {
+      "post" : {
+        "tags" : [ "Underwriting" ],
+        "operationId" : "UnderwritingController_SubmitTriggeredUnderwriting",
+        "parameters" : [ {
+          "name" : "tenantId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TriggeredUnderwritingSubmissionModel"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TriggeredUnderwritingResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "GenericRequest" : {
+        "required" : [ "authenticationKeyId", "authenticationKeyValue" ],
+        "type" : "object",
+        "properties" : {
+          "authenticationKeyId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "00000000-0000-0000-0000-000000000000"
+          },
+          "authenticationKeyValue" : {
+            "type" : "string",
+            "example" : "Dj!EaqGu1eZmkadIC^is_fPLuoFF3EJgAaL5SAgMDX4Rmb!-I8GnM3*UFq6WJ-^2"
+          }
+        }
+      },
+      "MerchantApplicationTemplateResult" : {
+        "type" : "object",
+        "properties" : {
+          "interactiveQuestionsExpected" : {
+            "type" : "boolean"
+          },
+          "applicationSteps" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          },
+          "customFields" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CustomFieldResult"
+            }
+          },
+          "merchantApplicationTemplate" : {
+            "$ref" : "#/components/schemas/MerchantApplicationResult"
+          },
+          "merchantAgreement" : {
+            "$ref" : "#/components/schemas/MerchantAgreementResult"
+          }
+        }
+      },
+      "CustomFieldDefModel" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 12345
+          },
+          "prompt" : {
+            "type" : "string",
+            "example" : "Legal Business Name"
+          },
+          "shortName" : {
+            "type" : "string",
+            "example" : "Legal name"
+          },
+          "fieldType" : {
+            "type" : "string",
+            "example" : "text"
+          },
+          "defaultValue" : {
+            "type" : "string"
+          },
+          "placeholderText" : {
+            "type" : "string",
+            "example" : "Enter the business' legal name"
+          },
+          "minimumValue" : {
+            "type" : "string"
+          },
+          "maximumValue" : {
+            "type" : "string"
+          },
+          "maxLength" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "isRequired" : {
+            "type" : "boolean"
+          },
+          "optionsList" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "valuesList" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "stepNumber" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "userDefinedId" : {
+            "type" : "string",
+            "example" : "legal.name"
+          },
+          "orderingIndex" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 100
+          },
+          "validation1" : {
+            "$ref" : "#/components/schemas/ValidationModel"
+          },
+          "validation2" : {
+            "$ref" : "#/components/schemas/ValidationModel"
+          },
+          "validation3" : {
+            "$ref" : "#/components/schemas/ValidationModel"
+          },
+          "responseValueKeys" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "showHidePattern" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CustomFieldResult" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 12345
+          },
+          "prompt" : {
+            "type" : "string",
+            "example" : "Legal Business Name"
+          },
+          "shortName" : {
+            "type" : "string",
+            "example" : "Legal name"
+          },
+          "fieldType" : {
+            "type" : "string",
+            "example" : "text"
+          },
+          "defaultValue" : {
+            "type" : "string"
+          },
+          "placeholderText" : {
+            "type" : "string",
+            "example" : "Enter the business' legal name"
+          },
+          "minimumValue" : {
+            "type" : "string"
+          },
+          "maximumValue" : {
+            "type" : "string"
+          },
+          "maxLength" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "isRequired" : {
+            "type" : "boolean"
+          },
+          "optionsList" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "valuesList" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "stepNumber" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "userDefinedId" : {
+            "type" : "string",
+            "example" : "legal.name"
+          },
+          "orderingIndex" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 100
+          },
+          "validation1" : {
+            "$ref" : "#/components/schemas/ValidationModel"
+          },
+          "validation2" : {
+            "$ref" : "#/components/schemas/ValidationModel"
+          },
+          "validation3" : {
+            "$ref" : "#/components/schemas/ValidationModel"
+          },
+          "responseValueKeys" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "showHidePattern" : {
+            "type" : "string"
+          }
+        }
+      },
+      "MerchantApplicationSubmissionModel" : {
+        "required" : [ "authenticationKeyId", "authenticationKeyValue", "customFieldAnswers", "merchant_EmailAddress" ],
+        "type" : "object",
+        "properties" : {
+          "authenticationKeyId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "00000000-0000-0000-0000-000000000000"
+          },
+          "authenticationKeyValue" : {
+            "type" : "string",
+            "example" : "Dj!EaqGu1eZmkadIC^is_fPLuoFF3EJgAaL5SAgMDX4Rmb!-I8GnM3*UFq6WJ-^2"
+          },
+          "merchant_EmailAddress" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "merchant_IPAddress" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "merchant_IPDateTime" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "merchant_BrowserUserAgentString" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "termsVersion" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "termsSignerName" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "externalApplicationId" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "doApplicationSubmissionUnderwriting" : {
+            "type" : "boolean"
+          },
+          "customFieldAnswers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CustomFieldValueModel"
+            }
+          }
+        }
+      },
+      "MerchantApplicationResult" : {
+        "type" : "object",
+        "properties" : {
+          "authenticationKeyId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "00000000-0000-0000-0000-000000000000"
+          },
+          "authenticationKeyValue" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "merchant_EmailAddress" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "merchant_IPAddress" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "merchant_IPDateTime" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "merchant_BrowserUserAgentString" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "termsVersion" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "termsSignerName" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "externalApplicationId" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "doApplicationSubmissionUnderwriting" : {
+            "type" : "boolean"
+          },
+          "customFieldAnswers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CustomFieldValueResult"
+            }
+          }
+        }
+      },
+      "MerchantAgreement" : {
+        "type" : "object",
+        "properties" : {
+          "termsVersion" : {
+            "type" : "string"
+          },
+          "sections" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MerchantAgreementSection"
+            }
+          }
+        }
+      },
+      "MerchantAgreementResult" : {
+        "type" : "object",
+        "properties" : {
+          "termsVersion" : {
+            "type" : "string"
+          },
+          "sections" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MerchantAgreementSection"
+            }
+          }
+        }
+      },
+      "ValidationModel" : {
+        "type" : "object",
+        "properties" : {
+          "validationTypeName" : {
+            "type" : "string",
+            "example" : "Readable"
+          },
+          "maxLength" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "minLength" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "minValue" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "maxValue" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "minDate" : {
+            "type" : "string"
+          },
+          "maxDate" : {
+            "type" : "string"
+          },
+          "validValues" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "regexPattern" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CustomFieldValueModel" : {
+        "type" : "object",
+        "properties" : {
+          "userDefinedId" : {
+            "type" : "string",
+            "example" : "legal.name"
+          },
+          "value" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string",
+              "example" : "Bad Wolf LLC"
+            }
+          }
+        }
+      },
+      "CustomFieldValueResult" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 12345
+          },
+          "userDefinedId" : {
+            "type" : "string",
+            "example" : "legal.name"
+          },
+          "value" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string",
+              "example" : ""
+            }
+          }
+        }
+      },
+      "MerchantAgreementSection" : {
+        "type" : "object",
+        "properties" : {
+          "sectionText" : {
+            "type" : "string"
+          },
+          "metadata" : {
+            "$ref" : "#/components/schemas/MerchantAgreementSectionMetadata"
+          }
+        }
+      },
+      "MerchantAgreementSectionMetadata" : {
+        "type" : "object",
+        "properties" : {
+          "fontSize" : {
+            "type" : "string"
+          }
+        }
+      },
+      "MerchantApplicationSubmissionResult" : {
+        "required" : [ "merchantApplicationId", "status" ],
+        "type" : "object",
+        "properties" : {
+          "merchantApplicationId" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "externalMerchantApplicationId" : {
+            "type" : "string"
+          },
+          "infiniceptApplicationId" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "integer",
+            "format" : "int32",
+            "enum" : [ 0, 10, 19, 20, 30 ]
+          },
+          "statusMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "MerchantApplicationSubmissionError" : {
+        "type" : "object",
+        "properties" : {
+          "field" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "MerchantApplicationQuestion" : {
+        "required" : [ "isRequired", "orderingIndex", "stepNumber" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "prompt" : {
+            "type" : "string"
+          },
+          "shortName" : {
+            "type" : "string"
+          },
+          "fieldType" : {
+            "type" : "string"
+          },
+          "defaultValue" : {
+            "type" : "string"
+          },
+          "placeholderText" : {
+            "type" : "string"
+          },
+          "minimumValue" : {
+            "type" : "string"
+          },
+          "maximumValue" : {
+            "type" : "string"
+          },
+          "maxLength" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "isRequired" : {
+            "type" : "boolean"
+          },
+          "optionsList" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "valuesList" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "stepNumber" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "userDefinedId" : {
+            "type" : "string"
+          },
+          "orderingIndex" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "validation1" : {
+            "$ref" : "#/components/schemas/ValidationModel"
+          },
+          "validation2" : {
+            "$ref" : "#/components/schemas/ValidationModel"
+          },
+          "validation3" : {
+            "$ref" : "#/components/schemas/ValidationModel"
+          },
+          "responseValueKeys" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "showHidePattern" : {
+            "type" : "string"
+          }
+        }
+      },
+      "InteractiveQuestionsSubmissionModel" : {
+        "required" : [ "authenticationKeyId", "merchantApplicationId" ],
+        "type" : "object",
+        "properties" : {
+          "authenticationKeyId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "00000000-0000-0000-0000-000000000000"
+          },
+          "authenticationKeyValue" : {
+            "type" : "string",
+            "example" : "Dj!EaqGu1eZmkadIC^is_fPLuoFF3EJgAaL5SAgMDX4Rmb!-I8GnM3*UFq6WJ-^2"
+          },
+          "merchantApplicationId" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "interactiveQuestionsAnswers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/InteractiveQuestionAnswerModel"
+            }
+          }
+        }
+      },
+      "InteractiveQuestionAnswerModel" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "userDefinedId" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "SynchronousMerchantApplicationSubmissionResult" : {
+        "required" : [ "applicationStatus", "merchantApplicationId", "status" ],
+        "type" : "object",
+        "properties" : {
+          "underwritingResults" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UnderwritingServiceResultDetailResponse"
+            }
+          },
+          "applicationStatus" : {
+            "type" : "integer",
+            "description" : "0 Incomplete, 1 Approved, 2 AcquirerReview, 3 NewPend, 4 FollowUp, 5 RePend, 6 Triggered, 7 ApprovedAndBoarded, 8 Declined, 9 Existing, 10 LocationComplete, 11 Processing, 12 PreGenerated, 13 Triggering, 14 Withdrawn",
+            "format" : "int32",
+            "enum" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+          },
+          "applicationStatusLabel" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "merchantApplicationId" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "externalMerchantApplicationId" : {
+            "type" : "string"
+          },
+          "infiniceptApplicationId" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "integer",
+            "format" : "int32",
+            "enum" : [ 0, 10, 19, 20, 30 ]
+          },
+          "statusMessage" : {
+            "type" : "string"
+          },
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MerchantApplicationSubmissionError"
+            }
+          },
+          "interactiveQuestionsList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MerchantApplicationQuestion"
+            }
+          },
+          "interactiveQuestionsTemplate" : {
+            "$ref" : "#/components/schemas/InteractiveQuestionsSubmissionModel"
+          }
+        }
+      },
+      "UnderwritingServiceResultDetailResponse" : {
+        "type" : "object",
+        "properties" : {
+          "serviceID" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "00000000-0000-0000-0000-000000000000"
+          },
+          "serviceTitle" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "integer",
+            "description" : "-2 Loading, -1 Working, 0 Not Set, 1 Green, 2 Yellow, 3 Red, 4 Hard Decline",
+            "format" : "int32",
+            "enum" : [ -2, -1, 0, 1, 2, 3, 4 ]
+          },
+          "statusLabel" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "category" : {
+            "type" : "integer",
+            "description" : "0 KYCPersonal, 1 KYCBusiness, 2 Fraud, 3 Credit, 4 AcceptableUse, 5 Social",
+            "format" : "int32",
+            "enum" : [ 0, 1, 2, 3, 4, 5, 6 ]
+          },
+          "categoryLabel" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "resultDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "PartialMerchantApplicationSubmissionResult" : {
+        "required" : [ "merchantApplicationId", "status" ],
+        "type" : "object",
+        "properties" : {
+          "merchantClaimURL" : {
+            "type" : "string"
+          },
+          "administratorURL" : {
+            "type" : "string"
+          },
+          "merchantApplicationId" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "externalMerchantApplicationId" : {
+            "type" : "string"
+          },
+          "infiniceptApplicationId" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "integer",
+            "format" : "int32",
+            "enum" : [ 0, 10, 19, 20, 30 ]
+          },
+          "statusMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "MerchantApplicationDetailsResponse" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "infiniceptApplicationId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "00000000-0000-0000-0000-000000000000"
+          },
+          "externalApplicationId" : {
+            "type" : "string"
+          },
+          "applicationStatus" : {
+            "type" : "integer",
+            "description" : "0 Incomplete, 1 Approved, 2 AcquirerReview, 3 NewPend, 4 FollowUp, 5 RePend, 6 Triggered, 7 ApprovedAndBoarded, 8 Declined, 9 Existing, 10 LocationComplete, 11 Processing, 12 PreGenerated, 13 Triggering, 14 Withdrawn",
+            "format" : "int32",
+            "enum" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+          },
+          "applicationStatusLabel" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "customFields" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CustomFieldValueModel"
+            }
+          },
+          "underwritingResults" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UnderwritingServiceResultDetailResponse"
+            }
+          },
+          "boardingResults" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/BoardingServiceResultDetailResponse"
+            }
+          },
+          "createdDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "lastModifiedDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "completedDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "AdditionalLocationDetailsResponse" : {
+        "type" : "object",
+        "properties" : {
+          "customFieldAnswers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CustomFieldValueModel"
+            }
+          }
+        }
+      },
+      "BoardingServiceResultDetailResponse" : {
+        "type" : "object",
+        "properties" : {
+          "serviceName" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "-1 Working, 0 NotSet, 1 WaitingOnResponse, 2 NeedsAttention, 3 Declined, 4 Completed"
+          },
+          "boardingReason" : {
+            "type" : "string"
+          },
+          "gatewayId" : {
+            "type" : "string"
+          },
+          "accountToken" : {
+            "type" : "string"
+          },
+          "acceptorId" : {
+            "type" : "string"
+          },
+          "mids" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "TriggeredUnderwritingSubmissionModel" : {
+        "required" : [ "authenticationKeyId" ],
+        "type" : "object",
+        "properties" : {
+          "authenticationKeyId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "00000000-0000-0000-0000-000000000000"
+          },
+          "authenticationKeyValue" : {
+            "type" : "string",
+            "example" : "Dj!EaqGu1eZmkadIC^is_fPLuoFF3EJgAaL5SAgMDX4Rmb!-I8GnM3*UFq6WJ-^2"
+          },
+          "merchantApplicationId" : {
+            "type" : "string"
+          },
+          "triggerId" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TriggeredUnderwritingResponseModel" : {
+        "required" : [ "allGreen", "isPend" ],
+        "type" : "object",
+        "properties" : {
+          "allGreen" : {
+            "type" : "boolean"
+          },
+          "isPend" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "BatchedBoardingResultsWebhook" : {
+        "type" : "object",
+        "properties" : {
+          "MerchantApplicationId" : {
+            "type" : "integer",
+            "example" : 12345
+          },
+          "InfiniceptApplicationId" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "00000000-0000-0000-0000-000000000000"
+          },
+          "InfiniceptMerchantIdentifier" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "00000000-0000-0000-0000-000000000000"
+          },
+          "ExternalApplicationId" : {
+            "type" : "string"
+          },
+          "ExternalApplicationIdentifier" : {
+            "type" : "string"
+          },
+          "MerchantIdentifier" : {
+            "type" : "string",
+            "description" : "This field will either match the ExternalApplicationIdentifier, or MerchantApplicationId if ExternalApplicationIdentifier is null."
+          },
+          "ApplicationStatus" : {
+            "type" : "integer"
+          },
+          "ApplicationStatusLabel" : {
+            "type" : "string",
+            "description" : "Allowed Values: 1 Approved, 2 Acquirer Review, 7 Approved and Boarded"
+          },
+          "BoardingResultsURL" : {
+            "type" : "string"
+          },
+          "BoardingResults" : {
+            "$ref" : "#/components/schemas/BatchedBoardingBoardingResults"
+          }
+        }
+      },
+      "BatchedBoardingBoardingResults" : {
+        "type" : "object",
+        "properties" : {
+          "BoardingServiceTitle" : {
+            "type" : "string"
+          },
+          "Status" : {
+            "type" : "integer",
+            "description" : "1 WaitingOnResponse, 2 NeedsAttention, 3 Declined, 4 Completed"
+          },
+          "Details" : {
+            "$ref" : "#/components/schemas/BatchedBoardingDetails"
+          }
+        }
+      },
+      "BatchedBoardingDetails" : {
+        "type" : "object",
+        "properties" : {
+          "FUSER" : {
+            "type" : "string",
+            "description" : "The email address used to fill out the application."
+          },
+          "COMPLETED" : {
+            "type" : "string",
+            "description" : "0 Not completed successfully, 1 Successul boarding"
+          },
+          "BOARDINGREASON" : {
+            "type" : "string"
+          },
+          "__PROCESSED_DATETIME__" : {
+            "type" : "string",
+            "description" : "The  time the boarding service was run.",
+            "format" : "date-time"
+          },
+          "OUTGOINGJSON" : {
+            "type" : "object"
+          },
+          "APIRESPONSE" : {
+            "type" : "object"
+          },
+          "APISTATUSCODE" : {
+            "type" : "string"
+          }
+        }
+      },
+      "BatchedUnderwritingResultsWebhook" : {
+        "type" : "object",
+        "properties" : {
+          "Type" : {
+            "type" : "integer",
+            "description" : "4 Batched_UnderwritingComplete",
+            "example" : 4
+          },
+          "EventIdentifier" : {
+            "type" : "string",
+            "example" : "Batched_UnderwritingComplete"
+          },
+          "EventData" : {
+            "$ref" : "#/components/schemas/BatchedUnderwritingResultsWebhook_EventData"
+          }
+        }
+      },
+      "CategoryResults" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/CategoryResultsModel"
+        }
+      },
+      "CategoryResultsModel" : {
+        "type" : "object",
+        "properties" : {
+          "UnderwritingResults" : {
+            "$ref" : "#/components/schemas/UnderwritingResults"
+          }
+        }
+      },
+      "UnderwritingResults" : {
+        "type" : "object",
+        "properties" : {
+          "Custom Application Checks" : {
+            "$ref" : "#/components/schemas/CustomApplicationChecks"
+          },
+          "Status" : {
+            "type" : "string"
+          },
+          "Category" : {
+            "type" : "string",
+            "description" : "Expected Values: AcceptableUse, Credit, Fraud, KYCBusiness, KYCPersonal, Social"
+          }
+        }
+      },
+      "CustomApplicationChecks" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/CustomApplicationChecksObject"
+        }
+      },
+      "CustomApplicationChecksObject" : {
+        "type" : "object",
+        "properties" : {
+          "Value" : {
+            "type" : "string",
+            "description" : "Results from underwriting"
+          },
+          "Status" : {
+            "type" : "string",
+            "description" : "Green, Yellow, Red, HardDecline"
+          },
+          "ExtraData" : {
+            "type" : "object"
+          }
+        }
+      },
+      "DemographicDataChangeWebhook" : {
+        "type" : "object",
+        "properties" : {
+          "Type" : {
+            "type" : "integer",
+            "description" : "7 DemographicDataChange",
+            "example" : 7
+          },
+          "EventIdentifier" : {
+            "type" : "string",
+            "example" : "DemographicDataChange"
+          },
+          "EventData" : {
+            "$ref" : "#/components/schemas/DemographicDataChangeWebhook_EventData"
+          }
+        }
+      },
+      "BatchedUnderwritingResultsWebhook_EventData" : {
+        "type" : "object",
+        "properties" : {
+          "CategoryResults" : {
+            "$ref" : "#/components/schemas/CategoryResults"
+          },
+          "MerchantApplicationId" : {
+            "type" : "integer",
+            "example" : 12345
+          },
+          "Status" : {
+            "type" : "string",
+            "description" : "The status of the application."
+          },
+          "StatusValue" : {
+            "type" : "integer",
+            "description" : "0 Incomplete, 1 Approved, 2 Acquirer Review, 3 New Pend, 4 Follow Up, 5 Re-Pend, 7 Approved and Boarded, 12 Pre-Generated"
+          },
+          "ExternalApplicationIdentifier" : {
+            "type" : "string"
+          },
+          "MerchantIdentifier" : {
+            "type" : "string",
+            "description" : "This field will either match the ExternalApplicationIdentifier, or MerchantApplicationId if ExternalApplicationIdentifier is null."
+          },
+          "UnderwritingResultsURL" : {
+            "type" : "string"
+          },
+          "InfiniceptMerchantIdentifier" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "00000000-0000-0000-0000-000000000000"
+          }
+        }
+      },
+      "DemographicDataChangeWebhook_EventData" : {
+        "type" : "object",
+        "properties" : {
+          "MerchantApplicationId" : {
+            "type" : "integer",
+            "example" : 12334
+          },
+          "MerchantIdentifier" : {
+            "type" : "string",
+            "description" : "This field will either match the ExternalApplicationIdentifier, or MerchantApplicationId if ExternalApplicationIdentifier is null."
+          },
+          "ApplicationStatusLabel" : {
+            "type" : "string"
+          },
+          "ApplicationStatus" : {
+            "type" : "integer",
+            "description" : "1 Approved, 2 Acquirer Review, 3 New Pend, 4 Follow Up, 5 Re-Pend, 6 Triggered Pend, 7 Approved and Boarded, 8 Declined, 12 Pre-Generated, 14 Withdrawn"
+          },
+          "ExternalApplicationIdentifier" : {
+            "type" : "string"
+          },
+          "CustomFields" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CustomFieldValueModel"
+            }
+          },
+          "InfiniceptMerchantIdentifier" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "00000000-0000-0000-0000-000000000000"
+          },
+          "Created" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "Completed" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "Tenant" : {
+        "name" : "tenantId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string"
+        }
+      }
+    },
+    "requestBodies" : {
+      "GenericRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/GenericRequest"
+            }
+          }
+        },
+        "required" : true
+      },
+      "MerchantApplicationSubmissionModel" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/MerchantApplicationSubmissionModel"
+            }
+          }
+        },
+        "required" : true
+      },
+      "BatchedBoardingResultsWebhook" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/BatchedBoardingResultsWebhook"
+            }
+          }
+        }
+      },
+      "BatchedUnderwritingResultsWebhook" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/BatchedUnderwritingResultsWebhook"
+            }
+          }
+        }
+      },
+      "DemographicDataChangeWebhook" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/DemographicDataChangeWebhook"
+            }
+          }
+        }
+      }
+    }
+  }
+}
