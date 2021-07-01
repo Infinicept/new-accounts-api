@@ -140,7 +140,7 @@
     "/{tenantId}/api/v1/MerchantApplication/SubmitSync" : {
       "post" : {
         "tags" : [ "Merchant Application" ],
-        "summary" : "Submit merchant application Syncronously. **DEPRECATED**",
+        "summary" : "Submit merchant application Syncronously.",
         "description" : "Submit a completed merchant application to Infinicept for underwriting and boarding.",
         "operationId" : "MerchantApplicationController_SubmitSync",
         "parameters" : [ {
