@@ -2,7 +2,7 @@
   "openapi" : "3.0.0",
   "info" : {
     "title" : "New Accounts API",
-    "description" : "Last Updated: 2021-06-30",
+    "description" : "Last Updated: 2021-07-07",
     "version" : "1.0.0"
   },
   "externalDocs" : {
@@ -13,6 +13,17 @@
     "url" : "https://merchantapp.io"
   } ],
   "paths" : {
+    "/diagnostics/heartbeat" : {
+      "get" : {
+        "tags" : [ "Diagnostics" ],
+        "summary" : "Platform heartbeat health check.",
+        "responses" : {
+          "200" : {
+            "description" : "Success"
+          }
+        }
+      }
+    },
     "/{tenantId}/api/v1/MerchantApplication/Template" : {
       "post" : {
         "tags" : [ "Merchant Application" ],
