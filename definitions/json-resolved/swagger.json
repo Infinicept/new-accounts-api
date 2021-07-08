@@ -1664,5 +1664,7 @@
       }
     }
   },
-  "x-readme.samples-languages" : [ "curl", "csharp", "ruby", "php", "java", "python" ]
+  "x-readme" : {
+    "samples-languages" : [ "curl", "csharp", "ruby", "php", "java", "python" ]
+  }
 }
