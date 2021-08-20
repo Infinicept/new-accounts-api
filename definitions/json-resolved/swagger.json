@@ -2,12 +2,8 @@
   "openapi" : "3.0.0",
   "info" : {
     "title" : "New Accounts API",
-    "description" : "Last Updated: 2021-07-07",
+    "description" : "Last Updated: 2021-08-20",
     "version" : "1.0.0"
-  },
-  "externalDocs" : {
-    "description" : "Custom Field Validations",
-    "url" : "https://app.getguru.com/card/inpxkXKT/Custom-Fields"
   },
   "servers" : [ {
     "url" : "https://merchantapp.io"
@@ -24,15 +20,16 @@
         }
       }
     },
-    "/{tenantId}/api/v1/MerchantApplication/Template" : {
+    "/{CobrandId}/api/v1/MerchantApplication/Template" : {
       "post" : {
         "tags" : [ "Merchant Application" ],
-        "summary" : "Retrieve merchant application template",
-        "description" : "Use this method to get the template to be used to submit new merchant applications.",
+        "summary" : "Retrieve Merchant Application Template",
+        "description" : "Retrieve the configured custom fields, and merchant application template.",
         "operationId" : "MerchantApplicationController_Template",
         "parameters" : [ {
-          "name" : "tenantId",
+          "name" : "CobrandId",
           "in" : "path",
+          "description" : "Cobrand ID assigned by Infinicept",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -57,15 +54,16 @@
         }
       }
     },
-    "/{tenantId}/api/v1/MerchantApplication/Submit" : {
+    "/{CobrandId}/api/v1/MerchantApplication/Submit" : {
       "post" : {
         "tags" : [ "Merchant Application" ],
-        "summary" : "Submit merchant application asyncronously",
+        "summary" : "Submit Merchant Application Asyncronously",
         "description" : "Asyncronously submit a completed merchant application to Infinicept for underwriting and boarding.",
         "operationId" : "MerchantApplicationController_Submit",
         "parameters" : [ {
-          "name" : "tenantId",
+          "name" : "CobrandId",
           "in" : "path",
+          "description" : "Cobrand ID assigned by Infinicept",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -148,49 +146,16 @@
         }
       }
     },
-    "/{tenantId}/api/v1/MerchantApplication/SubmitSync" : {
+    "/{CobrandId}/api/v1/MerchantApplication/SubmitPartial" : {
       "post" : {
         "tags" : [ "Merchant Application" ],
-        "summary" : "Submit merchant application Syncronously.",
-        "description" : "Submit a completed merchant application to Infinicept for underwriting and boarding.",
-        "operationId" : "MerchantApplicationController_SubmitSync",
-        "parameters" : [ {
-          "name" : "tenantId",
-          "in" : "path",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "$ref" : "#/components/requestBodies/MerchantApplicationSubmissionModel"
-        },
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/SynchronousMerchantApplicationSubmissionResult"
-                }
-              }
-            }
-          }
-        },
-        "deprecated" : true
-      }
-    },
-    "/{tenantId}/api/v1/MerchantApplication/SubmitPartial" : {
-      "post" : {
-        "tags" : [ "Merchant Application" ],
-        "summary" : "Submit partial merchant application",
+        "summary" : "Submit Partial Merchant Application",
         "description" : "This method submits a pre-generated application to the merchant. Any data submitted in the custom fields will populate in the custom fields on the merchant application. If pre-generated notifications are setup, the notification sends to the selected user(s) upon API submission. Use the Template method to get the proper submission template for your cobrand.",
         "operationId" : "MerchantApplicationController_SubmitPartial",
         "parameters" : [ {
-          "name" : "tenantId",
+          "name" : "CobrandId",
           "in" : "path",
+          "description" : "Cobrand ID assigned by Infinicept",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -215,15 +180,16 @@
         }
       }
     },
-    "/{tenantId}/api/v1/MerchantApplication/Incomplete" : {
+    "/{CobrandId}/api/v1/MerchantApplication/Incomplete" : {
       "put" : {
         "tags" : [ "Merchant Application" ],
-        "summary" : "Incrimental merchant application submission.",
+        "summary" : "Submit and Update Partial Merchant Application Incrimentally",
         "description" : "This method validates, saves, and updates the application custom fields as the submerchant moves through the application steps, instead of sending the payload in a single submission.\n\nNote: Including the merchantApplicationId will result in updating the specified application; no merchantApplicationId will result in the creation of a new application.",
         "operationId" : "MerchantApplicationController_Incomplete",
         "parameters" : [ {
-          "name" : "tenantId",
+          "name" : "CobrandId",
           "in" : "path",
+          "description" : "Cobrand ID assigned by Infinicept",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -266,15 +232,16 @@
         }
       }
     },
-    "/{tenantId}/api/v1/MerchantApplication/UpdateMerchantApplication" : {
+    "/{CobrandId}/api/v1/MerchantApplication/UpdateMerchantApplication" : {
       "put" : {
         "tags" : [ "Merchant Application" ],
-        "summary" : "Update merchant application",
+        "summary" : "Update Merchant Application",
         "description" : "This method updates an existing application. \n\n Note: A successful API call results in a 204 No Content response from the server.",
         "operationId" : "MerchantApplicationController_UpdateMerchantApplication",
         "parameters" : [ {
-          "name" : "tenantId",
+          "name" : "CobrandId",
           "in" : "path",
+          "description" : "Cobrand ID assigned by Infinicept",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -308,55 +275,16 @@
         }
       }
     },
-    "/{tenantId}/api/v1/MerchantApplication/AnswerInteractiveQuestions" : {
-      "post" : {
-        "tags" : [ "Merchant Application" ],
-        "summary" : "Submit Answers to Knowledge Based Questions",
-        "description" : "Use this method to submit answers to the Knowledge Based Questions given by the Submit method.",
-        "operationId" : "MerchantApplicationController_AnswerInteractiveQuestions",
-        "parameters" : [ {
-          "name" : "tenantId",
-          "in" : "path",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/InteractiveQuestionsSubmissionModel"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/MerchantApplicationSubmissionResult"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/{tenantId}/api/v1/MerchantApplication/MerchantApplicationDetails" : {
+    "/{CobrandId}/api/v1/MerchantApplication/MerchantApplicationDetails" : {
       "get" : {
         "tags" : [ "Merchant Application" ],
-        "summary" : "Retrieve the merchant application details",
+        "summary" : "Retrieve Merchant Application Details",
         "description" : "This method gets the application's custom field details and the current status of the application's underwriting services.",
         "operationId" : "MerchantApplicationController_MerchantApplicationDetails",
         "parameters" : [ {
-          "name" : "tenantId",
+          "name" : "CobrandId",
           "in" : "path",
+          "description" : "Cobrand ID assigned by Infinicept",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -405,15 +333,16 @@
         }
       }
     },
-    "/{tenantId}/api/v1/MerchantApplication/AdditionalLocationDetails" : {
+    "/{CobrandId}/api/v1/MerchantApplication/AdditionalLocationDetails" : {
       "get" : {
         "tags" : [ "Merchant Application" ],
-        "summary" : "Retrieve the Additional Location Field Details",
+        "summary" : "Retrieve Additional Location Field Details",
         "description" : "This method gets the custom field details in the format to submit Additional Location applications.",
         "operationId" : "MerchantApplicationController_AdditionalLocationDetails",
         "parameters" : [ {
-          "name" : "tenantId",
+          "name" : "CobrandId",
           "in" : "path",
+          "description" : "Cobrand ID assigned by Infinicept",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -462,12 +391,14 @@
         }
       }
     },
-    "/{tenantId}/api/v1/Underwriting/SubmitTriggeredUnderwriting" : {
+    "/{CobrandId}/api/v1/Underwriting/SubmitTriggeredUnderwriting" : {
       "post" : {
         "tags" : [ "Underwriting" ],
+        "summary" : "Initiate Underwriting Service Trigger",
+        "description" : "Underwriting trigger configured in the Cobrand.",
         "operationId" : "UnderwritingController_SubmitTriggeredUnderwriting",
         "parameters" : [ {
-          "name" : "tenantId",
+          "name" : "CobrandId",
           "in" : "path",
           "required" : true,
           "style" : "simple",
@@ -509,11 +440,13 @@
         "properties" : {
           "authenticationKeyId" : {
             "type" : "string",
+            "description" : "The KeyId is used to authenticate your account into the New Accounts platform.",
             "format" : "uuid",
             "example" : "00000000-0000-0000-0000-000000000000"
           },
           "authenticationKeyValue" : {
             "type" : "string",
+            "description" : "The KeyValue pair is used to authenticate your account into the New Accounts platform.",
             "example" : "Dj!EaqGu1eZmkadIC^is_fPLuoFF3EJgAaL5SAgMDX4Rmb!-I8GnM3*UFq6WJ-^2"
           }
         }
@@ -541,91 +474,6 @@
           },
           "merchantAgreement" : {
             "$ref" : "#/components/schemas/MerchantAgreementResult"
-          }
-        }
-      },
-      "CustomFieldDefModel" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : 12345
-          },
-          "prompt" : {
-            "type" : "string",
-            "example" : "Legal Business Name"
-          },
-          "shortName" : {
-            "type" : "string",
-            "example" : "Legal name"
-          },
-          "fieldType" : {
-            "type" : "string",
-            "example" : "text"
-          },
-          "defaultValue" : {
-            "type" : "string"
-          },
-          "placeholderText" : {
-            "type" : "string",
-            "example" : "Enter the business' legal name"
-          },
-          "minimumValue" : {
-            "type" : "string"
-          },
-          "maximumValue" : {
-            "type" : "string"
-          },
-          "maxLength" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "isRequired" : {
-            "type" : "boolean"
-          },
-          "optionsList" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "valuesList" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "stepNumber" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "userDefinedId" : {
-            "type" : "string",
-            "example" : "legal.name"
-          },
-          "orderingIndex" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : 100
-          },
-          "validation1" : {
-            "$ref" : "#/components/schemas/ValidationModel"
-          },
-          "validation2" : {
-            "$ref" : "#/components/schemas/ValidationModel"
-          },
-          "validation3" : {
-            "$ref" : "#/components/schemas/ValidationModel"
-          },
-          "responseValueKeys" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "showHidePattern" : {
-            "type" : "string"
           }
         }
       },
@@ -729,6 +577,7 @@
           },
           "merchant_EmailAddress" : {
             "type" : "string",
+            "description" : "The Submerchant E-mail Address the applications claim link will be sent to.",
             "example" : ""
           },
           "merchant_IPAddress" : {
@@ -771,15 +620,18 @@
         "properties" : {
           "authenticationKeyId" : {
             "type" : "string",
+            "description" : "The KeyId is used to authenticate your account into the New Accounts platform.",
             "format" : "uuid",
             "example" : "00000000-0000-0000-0000-000000000000"
           },
           "authenticationKeyValue" : {
             "type" : "string",
+            "description" : "The KeyValue is used to authenticate your account into the New Accounts platform.",
             "example" : ""
           },
           "merchant_EmailAddress" : {
             "type" : "string",
+            "description" : "The submerchant e-mail address used to deliver e-mail notifications and pre-generated applications.",
             "example" : ""
           },
           "merchant_IPAddress" : {
@@ -813,20 +665,6 @@
             "type" : "array",
             "items" : {
               "$ref" : "#/components/schemas/CustomFieldValueResult"
-            }
-          }
-        }
-      },
-      "MerchantAgreement" : {
-        "type" : "object",
-        "properties" : {
-          "termsVersion" : {
-            "type" : "string"
-          },
-          "sections" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/MerchantAgreementSection"
             }
           }
         }
@@ -962,195 +800,6 @@
           },
           "statusMessage" : {
             "type" : "string"
-          }
-        }
-      },
-      "MerchantApplicationSubmissionError" : {
-        "type" : "object",
-        "properties" : {
-          "field" : {
-            "type" : "string"
-          },
-          "value" : {
-            "type" : "string"
-          },
-          "message" : {
-            "type" : "string"
-          }
-        }
-      },
-      "MerchantApplicationQuestion" : {
-        "required" : [ "isRequired", "orderingIndex", "stepNumber" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "prompt" : {
-            "type" : "string"
-          },
-          "shortName" : {
-            "type" : "string"
-          },
-          "fieldType" : {
-            "type" : "string"
-          },
-          "defaultValue" : {
-            "type" : "string"
-          },
-          "placeholderText" : {
-            "type" : "string"
-          },
-          "minimumValue" : {
-            "type" : "string"
-          },
-          "maximumValue" : {
-            "type" : "string"
-          },
-          "maxLength" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "isRequired" : {
-            "type" : "boolean"
-          },
-          "optionsList" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "valuesList" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "stepNumber" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "userDefinedId" : {
-            "type" : "string"
-          },
-          "orderingIndex" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "validation1" : {
-            "$ref" : "#/components/schemas/ValidationModel"
-          },
-          "validation2" : {
-            "$ref" : "#/components/schemas/ValidationModel"
-          },
-          "validation3" : {
-            "$ref" : "#/components/schemas/ValidationModel"
-          },
-          "responseValueKeys" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "showHidePattern" : {
-            "type" : "string"
-          }
-        }
-      },
-      "InteractiveQuestionsSubmissionModel" : {
-        "required" : [ "authenticationKeyId", "merchantApplicationId" ],
-        "type" : "object",
-        "properties" : {
-          "authenticationKeyId" : {
-            "type" : "string",
-            "format" : "uuid",
-            "example" : "00000000-0000-0000-0000-000000000000"
-          },
-          "authenticationKeyValue" : {
-            "type" : "string",
-            "example" : "Dj!EaqGu1eZmkadIC^is_fPLuoFF3EJgAaL5SAgMDX4Rmb!-I8GnM3*UFq6WJ-^2"
-          },
-          "merchantApplicationId" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "interactiveQuestionsAnswers" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/InteractiveQuestionAnswerModel"
-            }
-          }
-        }
-      },
-      "InteractiveQuestionAnswerModel" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "userDefinedId" : {
-            "type" : "string"
-          },
-          "value" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "string"
-            }
-          }
-        }
-      },
-      "SynchronousMerchantApplicationSubmissionResult" : {
-        "required" : [ "applicationStatus", "merchantApplicationId", "status" ],
-        "type" : "object",
-        "properties" : {
-          "underwritingResults" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/UnderwritingServiceResultDetailResponse"
-            }
-          },
-          "applicationStatus" : {
-            "type" : "integer",
-            "description" : "0 Incomplete, 1 Approved, 2 AcquirerReview, 3 NewPend, 4 FollowUp, 5 RePend, 6 Triggered, 7 ApprovedAndBoarded, 8 Declined, 9 Existing, 10 LocationComplete, 11 Processing, 12 PreGenerated, 13 Triggering, 14 Withdrawn",
-            "format" : "int32",
-            "enum" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
-          },
-          "applicationStatusLabel" : {
-            "type" : "string",
-            "readOnly" : true
-          },
-          "merchantApplicationId" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "externalMerchantApplicationId" : {
-            "type" : "string"
-          },
-          "infiniceptApplicationId" : {
-            "type" : "string"
-          },
-          "status" : {
-            "type" : "integer",
-            "format" : "int32",
-            "enum" : [ 0, 10, 19, 20, 30 ]
-          },
-          "statusMessage" : {
-            "type" : "string"
-          },
-          "errors" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/MerchantApplicationSubmissionError"
-            }
-          },
-          "interactiveQuestionsList" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/MerchantApplicationQuestion"
-            }
-          },
-          "interactiveQuestionsTemplate" : {
-            "$ref" : "#/components/schemas/InteractiveQuestionsSubmissionModel"
           }
         }
       },
@@ -1603,9 +1252,10 @@
       }
     },
     "parameters" : {
-      "Tenant" : {
-        "name" : "tenantId",
+      "Cobrand" : {
+        "name" : "CobrandId",
         "in" : "path",
+        "description" : "Cobrand ID assigned by Infinicept",
         "required" : true,
         "style" : "simple",
         "explode" : false,
