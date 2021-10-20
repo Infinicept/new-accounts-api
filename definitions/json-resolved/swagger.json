@@ -183,7 +183,7 @@
     "/{CobrandId}/api/v1/MerchantApplication/Incomplete" : {
       "put" : {
         "tags" : [ "Merchant Application" ],
-        "summary" : "Submit and Update Partial Merchant Application Incrimentally",
+        "summary" : "Submit and Update Partial Merchant Application Incrementally",
         "description" : "This method validates, saves, and updates the application custom fields as the submerchant moves through the application steps, instead of sending the payload in a single submission.\n\nNote: Including the merchantApplicationId will result in updating the specified application; no merchantApplicationId will result in the creation of a new application.",
         "operationId" : "MerchantApplicationController_Incomplete",
         "parameters" : [ {
