@@ -2,7 +2,7 @@
   "openapi" : "3.0.0",
   "info" : {
     "title" : "New Accounts API",
-    "description" : "Last Updated: 2021-08-20",
+    "description" : "Last Updated: 2021-11-01",
     "version" : "1.0.0"
   },
   "servers" : [ {
@@ -81,64 +81,6 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/MerchantApplicationSubmissionResult"
-                }
-              }
-            }
-          }
-        },
-        "callbacks" : {
-          "webhooks" : {
-            "Batched Boarding Results" : {
-              "post" : {
-                "requestBody" : {
-                  "$ref" : "#/components/requestBodies/BatchedBoardingResultsWebhook"
-                },
-                "responses" : {
-                  "2XX" : {
-                    "description" : "OK"
-                  },
-                  "4XX" : {
-                    "description" : "Webhook is attempted 4 times."
-                  },
-                  "5XX" : {
-                    "description" : "Webhook is attempted 4 times."
-                  }
-                }
-              }
-            },
-            "Batched Underwriting Results" : {
-              "post" : {
-                "requestBody" : {
-                  "$ref" : "#/components/requestBodies/BatchedUnderwritingResultsWebhook"
-                },
-                "responses" : {
-                  "2XX" : {
-                    "description" : "OK"
-                  },
-                  "4XX" : {
-                    "description" : "Webhook is attempted 4 times."
-                  },
-                  "5XX" : {
-                    "description" : "Webhook is attempted 4 times."
-                  }
-                }
-              }
-            },
-            "Demographics Change" : {
-              "post" : {
-                "requestBody" : {
-                  "$ref" : "#/components/requestBodies/DemographicDataChangeWebhook"
-                },
-                "responses" : {
-                  "2XX" : {
-                    "description" : "OK"
-                  },
-                  "4XX" : {
-                    "description" : "Webhook is attempted 4 times."
-                  },
-                  "5XX" : {
-                    "description" : "Webhook is attempted 4 times."
-                  }
                 }
               }
             }
@@ -795,6 +737,7 @@
           },
           "status" : {
             "type" : "integer",
+            "description" : "0   Unknown Error, 10 Error,  19 Validation Error,  20 Interactive Questions, 30 Success",
             "format" : "int32",
             "enum" : [ 0, 10, 19, 20, 30 ]
           },
@@ -841,7 +784,6 @@
         }
       },
       "PartialMerchantApplicationSubmissionResult" : {
-        "required" : [ "merchantApplicationId", "status" ],
         "type" : "object",
         "properties" : {
           "merchantClaimURL" : {
@@ -862,6 +804,7 @@
           },
           "status" : {
             "type" : "integer",
+            "description" : "0   Unknown Error, 10 Error,  19 Validation Error,  20 Interactive Questions, 30 Success",
             "format" : "int32",
             "enum" : [ 0, 10, 19, 20, 30 ]
           },
@@ -1000,255 +943,6 @@
             "type" : "boolean"
           }
         }
-      },
-      "BatchedBoardingResultsWebhook" : {
-        "type" : "object",
-        "properties" : {
-          "MerchantApplicationId" : {
-            "type" : "integer",
-            "example" : 12345
-          },
-          "InfiniceptApplicationId" : {
-            "type" : "string",
-            "format" : "uuid",
-            "example" : "00000000-0000-0000-0000-000000000000"
-          },
-          "InfiniceptMerchantIdentifier" : {
-            "type" : "string",
-            "format" : "uuid",
-            "example" : "00000000-0000-0000-0000-000000000000"
-          },
-          "ExternalApplicationId" : {
-            "type" : "string"
-          },
-          "ExternalApplicationIdentifier" : {
-            "type" : "string"
-          },
-          "MerchantIdentifier" : {
-            "type" : "string",
-            "description" : "This field will either match the ExternalApplicationIdentifier, or MerchantApplicationId if ExternalApplicationIdentifier is null."
-          },
-          "ApplicationStatus" : {
-            "type" : "integer"
-          },
-          "ApplicationStatusLabel" : {
-            "type" : "string",
-            "description" : "Allowed Values: 1 Approved, 2 Acquirer Review, 7 Approved and Boarded"
-          },
-          "BoardingResultsURL" : {
-            "type" : "string"
-          },
-          "BoardingResults" : {
-            "$ref" : "#/components/schemas/BatchedBoardingBoardingResults"
-          }
-        }
-      },
-      "BatchedBoardingBoardingResults" : {
-        "type" : "object",
-        "properties" : {
-          "BoardingServiceTitle" : {
-            "type" : "string"
-          },
-          "Status" : {
-            "type" : "integer",
-            "description" : "1 WaitingOnResponse, 2 NeedsAttention, 3 Declined, 4 Completed"
-          },
-          "Details" : {
-            "$ref" : "#/components/schemas/BatchedBoardingDetails"
-          }
-        }
-      },
-      "BatchedBoardingDetails" : {
-        "type" : "object",
-        "properties" : {
-          "FUSER" : {
-            "type" : "string",
-            "description" : "The email address used to fill out the application."
-          },
-          "COMPLETED" : {
-            "type" : "string",
-            "description" : "0 Not completed successfully, 1 Successul boarding"
-          },
-          "BOARDINGREASON" : {
-            "type" : "string"
-          },
-          "__PROCESSED_DATETIME__" : {
-            "type" : "string",
-            "description" : "The  time the boarding service was run.",
-            "format" : "date-time"
-          },
-          "OUTGOINGJSON" : {
-            "type" : "object"
-          },
-          "APIRESPONSE" : {
-            "type" : "object"
-          },
-          "APISTATUSCODE" : {
-            "type" : "string"
-          }
-        }
-      },
-      "BatchedUnderwritingResultsWebhook" : {
-        "type" : "object",
-        "properties" : {
-          "Type" : {
-            "type" : "integer",
-            "description" : "4 Batched_UnderwritingComplete",
-            "example" : 4
-          },
-          "EventIdentifier" : {
-            "type" : "string",
-            "example" : "Batched_UnderwritingComplete"
-          },
-          "EventData" : {
-            "$ref" : "#/components/schemas/BatchedUnderwritingResultsWebhook_EventData"
-          }
-        }
-      },
-      "CategoryResults" : {
-        "type" : "array",
-        "items" : {
-          "$ref" : "#/components/schemas/CategoryResultsModel"
-        }
-      },
-      "CategoryResultsModel" : {
-        "type" : "object",
-        "properties" : {
-          "UnderwritingResults" : {
-            "$ref" : "#/components/schemas/UnderwritingResults"
-          }
-        }
-      },
-      "UnderwritingResults" : {
-        "type" : "object",
-        "properties" : {
-          "Custom Application Checks" : {
-            "$ref" : "#/components/schemas/CustomApplicationChecks"
-          },
-          "Status" : {
-            "type" : "string"
-          },
-          "Category" : {
-            "type" : "string",
-            "description" : "Expected Values: AcceptableUse, Credit, Fraud, KYCBusiness, KYCPersonal, Social"
-          }
-        }
-      },
-      "CustomApplicationChecks" : {
-        "type" : "array",
-        "items" : {
-          "$ref" : "#/components/schemas/CustomApplicationChecksObject"
-        }
-      },
-      "CustomApplicationChecksObject" : {
-        "type" : "object",
-        "properties" : {
-          "Value" : {
-            "type" : "string",
-            "description" : "Results from underwriting"
-          },
-          "Status" : {
-            "type" : "string",
-            "description" : "Green, Yellow, Red, HardDecline"
-          },
-          "ExtraData" : {
-            "type" : "object"
-          }
-        }
-      },
-      "DemographicDataChangeWebhook" : {
-        "type" : "object",
-        "properties" : {
-          "Type" : {
-            "type" : "integer",
-            "description" : "7 DemographicDataChange",
-            "example" : 7
-          },
-          "EventIdentifier" : {
-            "type" : "string",
-            "example" : "DemographicDataChange"
-          },
-          "EventData" : {
-            "$ref" : "#/components/schemas/DemographicDataChangeWebhook_EventData"
-          }
-        }
-      },
-      "BatchedUnderwritingResultsWebhook_EventData" : {
-        "type" : "object",
-        "properties" : {
-          "CategoryResults" : {
-            "$ref" : "#/components/schemas/CategoryResults"
-          },
-          "MerchantApplicationId" : {
-            "type" : "integer",
-            "example" : 12345
-          },
-          "Status" : {
-            "type" : "string",
-            "description" : "The status of the application."
-          },
-          "StatusValue" : {
-            "type" : "integer",
-            "description" : "0 Incomplete, 1 Approved, 2 Acquirer Review, 3 New Pend, 4 Follow Up, 5 Re-Pend, 7 Approved and Boarded, 12 Pre-Generated"
-          },
-          "ExternalApplicationIdentifier" : {
-            "type" : "string"
-          },
-          "MerchantIdentifier" : {
-            "type" : "string",
-            "description" : "This field will either match the ExternalApplicationIdentifier, or MerchantApplicationId if ExternalApplicationIdentifier is null."
-          },
-          "UnderwritingResultsURL" : {
-            "type" : "string"
-          },
-          "InfiniceptMerchantIdentifier" : {
-            "type" : "string",
-            "format" : "uuid",
-            "example" : "00000000-0000-0000-0000-000000000000"
-          }
-        }
-      },
-      "DemographicDataChangeWebhook_EventData" : {
-        "type" : "object",
-        "properties" : {
-          "MerchantApplicationId" : {
-            "type" : "integer",
-            "example" : 12334
-          },
-          "MerchantIdentifier" : {
-            "type" : "string",
-            "description" : "This field will either match the ExternalApplicationIdentifier, or MerchantApplicationId if ExternalApplicationIdentifier is null."
-          },
-          "ApplicationStatusLabel" : {
-            "type" : "string"
-          },
-          "ApplicationStatus" : {
-            "type" : "integer",
-            "description" : "1 Approved, 2 Acquirer Review, 3 New Pend, 4 Follow Up, 5 Re-Pend, 6 Triggered Pend, 7 Approved and Boarded, 8 Declined, 12 Pre-Generated, 14 Withdrawn"
-          },
-          "ExternalApplicationIdentifier" : {
-            "type" : "string"
-          },
-          "CustomFields" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/CustomFieldValueModel"
-            }
-          },
-          "InfiniceptMerchantIdentifier" : {
-            "type" : "string",
-            "format" : "uuid",
-            "example" : "00000000-0000-0000-0000-000000000000"
-          },
-          "Created" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "Completed" : {
-            "type" : "string",
-            "format" : "date-time"
-          }
-        }
       }
     },
     "parameters" : {
@@ -1284,33 +978,6 @@
           }
         },
         "required" : true
-      },
-      "BatchedBoardingResultsWebhook" : {
-        "content" : {
-          "application/json" : {
-            "schema" : {
-              "$ref" : "#/components/schemas/BatchedBoardingResultsWebhook"
-            }
-          }
-        }
-      },
-      "BatchedUnderwritingResultsWebhook" : {
-        "content" : {
-          "application/json" : {
-            "schema" : {
-              "$ref" : "#/components/schemas/BatchedUnderwritingResultsWebhook"
-            }
-          }
-        }
-      },
-      "DemographicDataChangeWebhook" : {
-        "content" : {
-          "application/json" : {
-            "schema" : {
-              "$ref" : "#/components/schemas/DemographicDataChangeWebhook"
-            }
-          }
-        }
       }
     }
   },
