@@ -2,7 +2,7 @@
   "openapi" : "3.0.0",
   "info" : {
     "title" : "New Accounts API",
-    "description" : "Last Updated: 2021-11-01",
+    "description" : "Last Updated: 2021-11-03",
     "version" : "1.0.0"
   },
   "servers" : [ {
@@ -58,7 +58,7 @@
       "post" : {
         "tags" : [ "Merchant Application" ],
         "summary" : "Submit Merchant Application Asyncronously",
-        "description" : "Asyncronously submit a completed merchant application to Infinicept for underwriting and boarding.",
+        "description" : "Asynchronously submit a completed merchant application to Infinicept for underwriting and boarding.",
         "operationId" : "MerchantApplicationController_Submit",
         "parameters" : [ {
           "name" : "CobrandId",
